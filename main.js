@@ -84,21 +84,23 @@ class Ball extends Elements{
         }
         else if (this.position_y>=canva.height-this.height || this.position_y <= 0){
             this.velocity_y*=-1;
-            console.log('123')
+        
+        }
+        else if (this.position_y>=player.position_y-this.height && this.position_x >= player.position_x && this.position_x <= player.position_x + player.width){
+            this.velocity_y*=-1;
         }
             
     }
     
 }
-let player = new Player(340,560,120,20,'red');
+let player = new Player(340,560,250,20,'red');
 let ball = new Ball(700,100,20,20,"green",60)
 
 
 let objects = []; /*Array of all objects in game , kinematics and statics */
 let staticObjects = [
     /*Array of all static objects, such blocks, just use "new StaticElements(etc),"*/
-    new StaticElements(20,20,100,100,'blue'),
-    new StaticElements(20,20,100,150,'blue'),
+ 
 ];
 
 objects.push(player);
