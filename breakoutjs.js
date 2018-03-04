@@ -22,7 +22,7 @@ class Player extends Elements {
             let code = e.keyCode;
             switch (code) {
                 case 37:
-                    if (this.position_x != 0) {
+                    if (this.position_x >= 0) {
                         this.position_x -= 40;
                     }
                     break;
@@ -106,7 +106,7 @@ class Ball extends Elements {
 
 
 let player = new Player(340, 580, 250, 20, 'red'); /* initialize player and ball */
-let ball = new Ball(400, 500, 20, 20, "green", 60)
+let ball = new Ball(400, 550, 20, 20, "green", 60)
 
 
 let objects = []; /*Array of all objects in game , kinematics and statics */
