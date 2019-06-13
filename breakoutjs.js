@@ -5,6 +5,7 @@ const pointsContainer = document.getElementById('points');
 let gameData = {
     points: 0,
     gameFinished: false,
+    gameFailed: false,
 }
 class Elements {
     constructor(position_x, position_y, width, height, color) {
@@ -97,14 +98,21 @@ class Ball extends Elements {
     wallCollision() {
         if (this.position_x >= canva.width - this.width || this.position_x <= 0) {
             this.velocity_x *= -1;
-        } else if (this.position_y >= canva.height - this.height || this.position_y <= 0) {
+        } else if (this.position_y >= canva.height - this.height) {
+            if (gameData.gameFailed === false){
+                document.querySelector('#loose').style.opacity="1";
+                
+            }
+        } 
+        else if (this.position_y <= 0){
             this.velocity_y *= -1;
-
-        } else if (this.position_y >= player.position_y - this.height && this.position_x >= player.position_x && this.position_x <= player.position_x + player.width) {
+        }
+        else if (this.position_y >= player.position_y - this.height && this.position_x >= player.position_x && this.position_x <= player.position_x + player.width) {
             this.velocity_y *= -1;
         }
 
     }
+ 
 
 }
 
@@ -117,16 +125,16 @@ let ball = new Ball(400, 550, 20, 20, "green", 60)
 let objects = []; /*Array of all objects in game , kinematics and statics */
 let staticObjects = [
     /*Array of all static objects, such blocks, just use "new StaticElements(etc),"*/
-    //new StaticElements(20, 50, 50, 50, 'blue'),
-    //new StaticElements(120, 50, 50, 50, 'blue'),
-    //new StaticElements(220, 50, 50, 50, 'blue'),
-    //new StaticElements(320, 50, 50, 50, 'blue'),
-    //new StaticElements(420, 50, 50, 50, 'blue'),
-    //new StaticElements(520, 50, 50, 50, 'blue'),
-    //new StaticElements(620, 50, 50, 50, 'blue'),
-    //new StaticElements(720, 50, 50, 50, 'blue'),
-    //new StaticElements(20, 150, 760, 50, 'green'),
-    //new StaticElements(20, 250, 200, 50, 'green'),
+    new StaticElements(20, 50, 50, 50, 'blue'),
+    new StaticElements(120, 50, 50, 50, 'blue'),
+    new StaticElements(220, 50, 50, 50, 'blue'),
+    new StaticElements(320, 50, 50, 50, 'blue'),
+    new StaticElements(420, 50, 50, 50, 'blue'),
+    new StaticElements(520, 50, 50, 50, 'blue'),
+    new StaticElements(620, 50, 50, 50, 'blue'),
+    new StaticElements(720, 50, 50, 50, 'blue'),
+    new StaticElements(20, 150, 760, 50, 'green'),
+    new StaticElements(20, 250, 200, 50, 'green'),
     new StaticElements(320, 250, 200, 50, 'green'),
     new StaticElements(580, 250, 200, 50, 'green'),
 
@@ -147,7 +155,7 @@ function checkIfGameIsDone(){
         })
         if (done === true){
             gameData.gameFinished = true;
-            document.querySelector('.winModal').style.opacity="1";
+            document.querySelector('#win').style.opacity="1";
         }
     }
 }
