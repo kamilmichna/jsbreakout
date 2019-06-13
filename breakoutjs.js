@@ -1,11 +1,13 @@
 const canva = document.getElementById('game_canvas')
 const canvas = canva.getContext('2d');
 const pointsContainer = document.getElementById('points');
+const lifesContainer = document.getElementById('lifes');
 'use strict'
 let gameData = {
     points: 0,
     gameFinished: false,
     gameFailed: false,
+    lifeCounter: 3,
 }
 class Elements {
     constructor(position_x, position_y, width, height, color) {
@@ -99,9 +101,12 @@ class Ball extends Elements {
         if (this.position_x >= canva.width - this.width || this.position_x <= 0) {
             this.velocity_x *= -1;
         } else if (this.position_y >= canva.height - this.height) {
-            if (gameData.gameFailed === false){
+            if (gameData.lifeCounter > 1){
+                gameData.lifeCounter--;
+                this.velocity_y *= -1;         
+            }
+            else{
                 document.querySelector('#loose').style.opacity="1";
-                
             }
         } 
         else if (this.position_y <= 0){
@@ -162,6 +167,7 @@ function checkIfGameIsDone(){
 function mainLoop() {
     canvas.clearRect(0, 0, canva.width, canva.height);
     checkIfGameIsDone();
+    lifesContainer.textContent = `Pozostałe życia: ${gameData.lifeCounter}`;
     pointsContainer.textContent = `Liczba trafień: ${gameData.points}`;
     for (let x = 0; x < objects.length; x++) {
         if (objects[x].display != false) {
