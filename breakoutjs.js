@@ -1,7 +1,11 @@
 const canva = document.getElementById('game_canvas')
 const canvas = canva.getContext('2d');
-
+const pointsContainer = document.getElementById('points');
 'use strict'
+let gameData = {
+    points: 0,
+    gameFinished: false,
+}
 class Elements {
     constructor(position_x, position_y, width, height, color) {
         this.width = width;
@@ -55,6 +59,7 @@ class StaticElements extends Elements {
                 if (ball.position_y + ball.height >= this.position_y && ball.position_y <= this.position_y + this.height && ball.position_x >= this.position_x && ball.position_x <= this.position_x + this.width) {
                     ball.velocity_y *= -1;
                     this.display = false;
+                    gameData.points+=1;
 
                 }
 
@@ -112,16 +117,16 @@ let ball = new Ball(400, 550, 20, 20, "green", 60)
 let objects = []; /*Array of all objects in game , kinematics and statics */
 let staticObjects = [
     /*Array of all static objects, such blocks, just use "new StaticElements(etc),"*/
-    new StaticElements(20, 50, 50, 50, 'blue'),
-    new StaticElements(120, 50, 50, 50, 'blue'),
-    new StaticElements(220, 50, 50, 50, 'blue'),
-    new StaticElements(320, 50, 50, 50, 'blue'),
-    new StaticElements(420, 50, 50, 50, 'blue'),
-    new StaticElements(520, 50, 50, 50, 'blue'),
-    new StaticElements(620, 50, 50, 50, 'blue'),
-    new StaticElements(720, 50, 50, 50, 'blue'),
-    new StaticElements(20, 150, 760, 50, 'green'),
-    new StaticElements(20, 250, 200, 50, 'green'),
+    //new StaticElements(20, 50, 50, 50, 'blue'),
+    //new StaticElements(120, 50, 50, 50, 'blue'),
+    //new StaticElements(220, 50, 50, 50, 'blue'),
+    //new StaticElements(320, 50, 50, 50, 'blue'),
+    //new StaticElements(420, 50, 50, 50, 'blue'),
+    //new StaticElements(520, 50, 50, 50, 'blue'),
+    //new StaticElements(620, 50, 50, 50, 'blue'),
+    //new StaticElements(720, 50, 50, 50, 'blue'),
+    //new StaticElements(20, 150, 760, 50, 'green'),
+    //new StaticElements(20, 250, 200, 50, 'green'),
     new StaticElements(320, 250, 200, 50, 'green'),
     new StaticElements(580, 250, 200, 50, 'green'),
 
@@ -132,9 +137,24 @@ objects.push(player);
 objects.push(ball);
 objects.push(...staticObjects)
 
-
+function checkIfGameIsDone(){
+    if (gameData.gameFinished === false){
+        let done = true;
+        staticObjects.map(el=>{
+            if (el.display === true){
+                done = false;
+            }
+        })
+        if (done === true){
+            gameData.gameFinished = true;
+            document.querySelector('.winModal').style.opacity="1";
+        }
+    }
+}
 function mainLoop() {
-    canvas.clearRect(0, 0, canva.width, canva.height)
+    canvas.clearRect(0, 0, canva.width, canva.height);
+    checkIfGameIsDone();
+    pointsContainer.textContent = `Liczba trafień: ${gameData.points}`;
     for (let x = 0; x < objects.length; x++) {
         if (objects[x].display != false) {
             canvas.fillStyle = objects[x].color;
